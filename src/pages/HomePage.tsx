@@ -4,6 +4,8 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
 import { GradientButton } from "@/components/ui/gradient-button";
+import { ExpandableServices } from "@/components/ui/expandable-services";
+import { LogoLoop } from "@/components/ui/logo-loop";
 
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -68,6 +70,49 @@ export default function HomePage() {
       icon: "⚡",
       title: "Performance Optimization",
       description: "Optimize application performance and reduce infrastructure costs.",
+    },
+  ];
+
+  const expandableServices = [
+    {
+      number: "1",
+      title: "DEVOPS",
+      subtitle: "Transformation & Automation",
+      description:
+        "Modernize your infrastructure with cutting-edge DevOps practices and automation solutions.",
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=800&fit=crop",
+      accentColor: "#3B82F6",
+      slug: "devops-transformation",
+    },
+    {
+      number: "2",
+      title: "CLOUD",
+      subtitle: "Migration & Infrastructure",
+      description:
+        "Seamlessly migrate to AWS, Azure, or GCP with zero-downtime strategies and expert guidance.",
+      image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&h=800&fit=crop",
+      accentColor: "#10B981",
+      slug: "cloud-migration",
+    },
+    {
+      number: "3",
+      title: "SECURITY",
+      subtitle: "Protection & Compliance",
+      description:
+        "Integrate security best practices into your CI/CD pipelines with comprehensive compliance solutions.",
+      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=800&fit=crop",
+      accentColor: "#EF4444",
+      slug: "security-compliance",
+    },
+    {
+      number: "4",
+      title: "TRAINING",
+      subtitle: "Expert Learning Programs",
+      description:
+        "Master DevOps engineering through real production scenarios with industry veterans.",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop",
+      accentColor: "#8B5CF6",
+      slug: "training-programs",
     },
   ];
 
@@ -180,17 +225,34 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gray-50">
+      {/* Expandable Services Section */}
+      <section id="services" className="w-full bg-black">
+        <div className="text-center py-16 px-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Our{" "}
+            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Services
+            </span>
+          </h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Comprehensive DevOps solutions tailored to accelerate your digital transformation
+          </p>
+        </div>
+        <ExpandableServices services={expandableServices} />
+      </section>
+
+      {/* Traditional Services Grid (Optional - can be removed) */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Our{" "}
+              What We{" "}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Services
+                Offer
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive DevOps solutions tailored to accelerate your digital transformation
+              Detailed breakdown of our comprehensive service offerings
             </p>
           </div>
 
@@ -238,19 +300,35 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          {/* Logo Loop Container */}
+          <div className="relative h-32 bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700">
+            <LogoLoop
+              logos={technologies[activeFilter as keyof typeof technologies].map((tech) => ({
+                src: techLogos[tech as keyof typeof techLogos],
+                alt: tech,
+                href: undefined,
+              }))}
+              speed={50}
+              direction="left"
+              logoHeight={64}
+              gap={48}
+              hoverSpeed={10}
+              scaleOnHover
+              fadeOut
+              fadeOutColor="#1F2937"
+              ariaLabel={`${activeFilter} technologies`}
+            />
+          </div>
+
+          {/* Technology Names Below Loop */}
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             {technologies[activeFilter as keyof typeof technologies].map((tech) => (
-              <div
+              <span
                 key={tech}
-                className="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-cyan-500 transition-all duration-300 transform hover:scale-105"
+                className="px-4 py-2 bg-gray-800 rounded-full text-sm font-medium text-gray-300 border border-gray-700 hover:border-cyan-500 transition-colors"
               >
-                <img
-                  src={techLogos[tech as keyof typeof techLogos]}
-                  alt={tech}
-                  className="w-12 h-12 mx-auto mb-3 rounded-lg"
-                />
-                <p className="text-center text-sm font-medium capitalize">{tech}</p>
-              </div>
+                {tech.charAt(0).toUpperCase() + tech.slice(1)}
+              </span>
             ))}
           </div>
         </div>
