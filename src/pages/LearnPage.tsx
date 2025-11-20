@@ -21,23 +21,25 @@ export default function LearnPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    try {
-      await submitContact({
-        name: formData.get("name") as string,
-        email: formData.get("email") as string,
-        company: (formData.get("company") as string) || undefined,
-        message: formData.get("message") as string,
-        type: "education",
-      });
-      toast.success("Message sent successfully!");
-      (e.target as HTMLFormElement).reset();
-    } catch (error) {
-      toast.error("Failed to send message. Please try again.");
-    }
+    void (async () => {
+      try {
+        await submitContact({
+          name: formData.get("name") as string,
+          email: formData.get("email") as string,
+          company: (formData.get("company") as string) || undefined,
+          message: formData.get("message") as string,
+          type: "education",
+        });
+        toast.success("Message sent successfully!");
+        (e.target as HTMLFormElement).reset();
+      } catch {
+        toast.error("Failed to send message. Please try again.");
+      }
+    })();
   };
 
   const missionTimeline = [
@@ -183,7 +185,7 @@ export default function LearnPage() {
       role: "Senior DevOps Engineer",
       company: "Stripe",
       content:
-        "Infrathrone didn't just teach me Kubernetes - it taught me how to think like a production engineer. The real-world scenarios prepared me for challenges I face daily.",
+        "Infrawarrior didn't just teach me Kubernetes - it taught me how to think like a production engineer. The real-world scenarios prepared me for challenges I face daily.",
       image:
         "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
     },
@@ -192,7 +194,7 @@ export default function LearnPage() {
       role: "Platform Engineer",
       company: "Shopify",
       content:
-        "The mentorship and hands-on approach at Infrathrone accelerated my career by years. I went from junior developer to platform engineer in 6 months.",
+        "The mentorship and hands-on approach at Infrawarrior accelerated my career by years. I went from junior developer to platform engineer in 6 months.",
       image:
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
     },
@@ -201,7 +203,7 @@ export default function LearnPage() {
       role: "Cloud Architect",
       company: "Netflix",
       content:
-        "What sets Infrathrone apart is the production mindset. You're not just learning tools - you're learning how to build systems that scale to millions of users.",
+        "What sets Infrawarrior apart is the production mindset. You're not just learning tools - you're learning how to build systems that scale to millions of users.",
       image:
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
     },
@@ -252,7 +254,7 @@ export default function LearnPage() {
             <div className="flex items-center justify-between">
               <div className="text-2xl font-bold">
                 <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                  Infrathrone
+                  Infrawarrior
                 </span>
               </div>
               <div className="hidden md:flex items-center space-x-8">
@@ -280,7 +282,7 @@ export default function LearnPage() {
 
         {/* Hero Section with Geometric Background - Two Column Layout */}
         <HeroGeometric
-          badge="Infrathrone Academy"
+          badge="Infrawarrior Academy"
           title1="Train Like It's"
           title2="Production"
           description="Master DevOps engineering through real production scenarios. Break systems, fix them, and learn from industry veterans who've scaled the world's largest platforms."
@@ -563,7 +565,7 @@ export default function LearnPage() {
               <div>
                 <div className="text-2xl font-bold mb-4">
                   <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                    Infrathrone
+                    Infrawarrior
                   </span>
                 </div>
                 <p className="text-gray-400 mb-4">
@@ -627,7 +629,7 @@ export default function LearnPage() {
               <div>
                 <h4 className="font-semibold mb-4 text-white">Connect</h4>
                 <ul className="space-y-2 text-gray-400">
-                  <li>learn@infrathrone.com</li>
+                  <li>learn@infrawarrior.com</li>
                   <li>+1 (555) 987-6543</li>
                   <li>San Francisco, CA</li>
                 </ul>
@@ -647,7 +649,7 @@ export default function LearnPage() {
 
             <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
               <p>
-                &copy; 2024 Infrathrone. All rights reserved. |{" "}
+                &copy; 2024 Infrawarrior. All rights reserved. |{" "}
                 <Link to="/" className="hover:text-cyan-400 transition-colors">
                   WePrior Solutions
                 </Link>

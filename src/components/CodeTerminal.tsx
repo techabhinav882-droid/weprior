@@ -1,10 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 export default function CodeTerminal() {
   const [currentSnippet, setCurrentSnippet] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [displayedText, setDisplayedText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
 
   const codeSnippets = [
     {
@@ -119,7 +124,7 @@ echo "✅ All systems operational"`,
     if (!isPlaying) return;
 
     const currentCode = codeSnippets[currentSnippet].code;
-    
+
     if (currentIndex < currentCode.length) {
       const timer = setTimeout(() => {
         setDisplayedText(currentCode.slice(0, currentIndex + 1));
@@ -148,7 +153,24 @@ echo "✅ All systems operational"`,
   };
 
   return (
-    <div className="relative bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl">
+    <div
+      ref={terminalRef}
+      className="relative bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl"
+      onMouseEnter={(e) => {
+        setShowTooltip(true);
+        if (nextButtonRef.current) {
+          const rect = nextButtonRef.current.getBoundingClientRect();
+          setTooltipPosition({
+            x: rect.left - 20,
+            y: rect.top + rect.height / 2,
+          });
+        }
+      }}
+      onMouseLeave={() => {
+        setShowTooltip(false);
+        setTooltipPosition(null);
+      }}
+    >
       {/* Terminal Header */}
       <div className="flex items-center justify-between bg-gray-800 px-6 py-4 border-b border-gray-700">
         <div className="flex items-center space-x-3">
@@ -161,7 +183,7 @@ echo "✅ All systems operational"`,
             {codeSnippets[currentSnippet].title}
           </span>
         </div>
-        
+
         <div className="flex items-center space-x-3">
           <button
             onClick={togglePlayPause}
@@ -170,6 +192,7 @@ echo "✅ All systems operational"`,
             {isPlaying ? "⏸️" : "▶️"}
           </button>
           <button
+            ref={nextButtonRef}
             onClick={nextSnippet}
             className="text-gray-400 hover:text-cyan-400 transition-colors p-1 rounded hover:bg-gray-700"
           >
@@ -190,6 +213,50 @@ echo "✅ All systems operational"`,
 
       {/* Floating Glow Effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 pointer-events-none"></div>
+
+      {/* Tooltip rendered via portal */}
+      {showTooltip &&
+        tooltipPosition &&
+        createPortal(
+          <div
+            className="fixed bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-4 py-3 rounded-lg text-sm font-medium whitespace-nowrap shadow-2xl animate-fadeIn pointer-events-none flex items-center gap-2"
+            style={{
+              left: `${tooltipPosition.x}px`,
+              top: `${tooltipPosition.y}px`,
+              transform: "translate(-100%, -50%)",
+              zIndex: 9999,
+            }}
+          >
+            <span>Click right to have more fun</span>
+            <svg
+              className="w-5 h-5 animate-bounce"
+              style={{ animationDirection: "alternate", animationDuration: "0.8s" }}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+            {/* Arrow pointing to the button */}
+            <div
+              className="absolute w-0 h-0"
+              style={{
+                right: "-8px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                borderTop: "8px solid transparent",
+                borderBottom: "8px solid transparent",
+                borderLeft: "8px solid #a855f7",
+              }}
+            ></div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

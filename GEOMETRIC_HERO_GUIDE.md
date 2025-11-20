@@ -2,7 +2,7 @@
 
 ## ✅ Integration Complete
 
-Successfully integrated an elegant geometric hero background with animated floating shapes into the Infrathrone (LearnPage) landing page.
+Successfully integrated an elegant geometric hero background with animated floating shapes into the Infrawarrior (LearnPage) landing page.
 
 ## 📦 What Was Installed
 
@@ -46,11 +46,11 @@ interface HeroGeometricProps {
 
 ## 📝 Current Implementation
 
-### Infrathrone Landing Page
+### Infrawarrior Landing Page
 
 ```tsx
 <HeroGeometric
-  badge="Infrathrone Academy"
+  badge="Infrawarrior Academy"
   title1="Train Like It's"
   title2="Production"
   description="Master DevOps engineering through real production scenarios..."

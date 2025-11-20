@@ -22,23 +22,25 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    try {
-      await submitContact({
-        name: formData.get("name") as string,
-        email: formData.get("email") as string,
-        company: (formData.get("company") as string) || undefined,
-        message: formData.get("message") as string,
-        type: "general",
-      });
-      toast.success("Message sent successfully!");
-      (e.target as HTMLFormElement).reset();
-    } catch (error) {
-      toast.error("Failed to send message. Please try again.");
-    }
+    void (async () => {
+      try {
+        await submitContact({
+          name: formData.get("name") as string,
+          email: formData.get("email") as string,
+          company: (formData.get("company") as string) || undefined,
+          message: formData.get("message") as string,
+          type: "general",
+        });
+        toast.success("Message sent successfully!");
+        (e.target as HTMLFormElement).reset();
+      } catch {
+        toast.error("Failed to send message. Please try again.");
+      }
+    })();
   };
 
   const services = [
@@ -188,7 +190,7 @@ export default function HomePage() {
                 Contact
               </a>
               <Link to="/learn" className="btn-nav">
-                Infrathrone
+                Infrawarrior
               </Link>
             </div>
           </div>
@@ -317,23 +319,25 @@ export default function HomePage() {
           </div>
 
           {/* Logo Loop Container */}
-          <div className="relative h-32 bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700">
-            <LogoLoop
-              logos={technologies[activeFilter as keyof typeof technologies].map((tech) => ({
-                src: techLogos[tech as keyof typeof techLogos],
-                alt: tech,
-                href: undefined,
-              }))}
-              speed={50}
-              direction="left"
-              logoHeight={64}
-              gap={48}
-              hoverSpeed={10}
-              scaleOnHover
-              fadeOut
-              fadeOutColor="#1F2937"
-              ariaLabel={`${activeFilter} technologies`}
-            />
+          <div className="relative h-32 pb-16 bg-gray-800/50 rounded-2xl border border-gray-700">
+            <div className="h-32 overflow-hidden">
+              <LogoLoop
+                logos={technologies[activeFilter as keyof typeof technologies].map((tech) => ({
+                  src: techLogos[tech as keyof typeof techLogos],
+                  alt: tech,
+                  href: undefined,
+                }))}
+                speed={50}
+                direction="left"
+                logoHeight={64}
+                gap={48}
+                hoverSpeed={10}
+                scaleOnHover
+                fadeOut
+                fadeOutColor="#1F2937"
+                ariaLabel={`${activeFilter} technologies`}
+              />
+            </div>
           </div>
 
           {/* Technology Names Below Loop */}
@@ -458,7 +462,7 @@ export default function HomePage() {
               <ul className="space-y-2 text-gray-400">
                 <li>
                   <Link to="/learn" className="hover:text-white transition-colors">
-                    Infrathrone Platform
+                    Infrawarrior Platform
                   </Link>
                 </li>
                 <li>
