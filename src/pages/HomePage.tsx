@@ -3,16 +3,25 @@ import { Link } from "react-router-dom";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
-import { GradientButton } from "@/components/ui/gradient-button";
+
 import { ExpandableServices } from "@/components/ui/expandable-services";
 import { LogoLoop } from "@/components/ui/logo-loop";
-import Threads from "@/components/ui/threads";
 import { AnimatedHeroText } from "@/components/ui/animated-hero-text";
+import { HeroWithBackground } from "../components/background/HeroWithBackground";
+import { useBackgroundConfig } from "../hooks/useBackgroundConfig";
+import "../theme.css";
+import { section } from "framer-motion/client";
 
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
   const submitContact = useMutation(api.contacts.submitContact);
+  const { getConfig, setSpeed } = useBackgroundConfig();
+
+  // Set slower animation speed on component mount
+  useEffect(() => {
+    setSpeed(0.4); // Slower speed (default is 1.0)
+  }, [setSpeed]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -158,131 +167,108 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold">
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                WePrior
-              </span>
-              <span className="text-gray-900"> Solutions</span>
+    <div className="min-h-screen bg-neon-dark">
+      {/* Hero Section with Cyber Neon Background */}
+      <HeroWithBackground config={getConfig()}>
+        <div className="relative z-20 flex flex-col min-h-screen">
+          {/* Navigation */}
+          <nav
+            className={`transition-all duration-300 ${
+              isScrolled ? "glass-neon-strong shadow-lg" : "bg-transparent"
+            }`}
+          >
+            <div className="max-w-7xl mx-auto px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="text-2xl font-bold">
+                  <span className="text-gradient-primary">WePrior</span>
+                  <span className="text-neon-primary"> Solutions</span>
+                </div>
+                <div className="hidden md:flex items-center space-x-8">
+                  <Link to="/" className="nav-link-neon">
+                    Home
+                  </Link>
+                  <a href="#services" className="nav-link-neon">
+                    Services
+                  </a>
+                  <a href="#products" className="nav-link-neon">
+                    Products
+                  </a>
+                  <a href="#blog" className="nav-link-neon">
+                    Blog
+                  </a>
+                  <a href="#contact" className="nav-link-neon">
+                    Contact
+                  </a>
+                  <Link to="/learn" className="btn-neon-primary btn-neon-sm">
+                    Infrawarrior
+                  </Link>
+                </div>
+              </div>
             </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors">
-                Home
-              </Link>
-              <a href="#services" className="text-gray-700 hover:text-blue-600 transition-colors">
-                Services
-              </a>
-              <a href="#products" className="text-gray-700 hover:text-blue-600 transition-colors">
-                Products
-              </a>
-              <a href="#blog" className="text-gray-700 hover:text-blue-600 transition-colors">
-                Blog
-              </a>
-              <a href="#contact" className="text-gray-700 hover:text-blue-600 transition-colors">
-                Contact
-              </a>
-              <Link to="/learn" className="btn-nav">
-                Infrawarrior
-              </Link>
+          </nav>
+
+          {/* Hero Content */}
+          <main className="flex-1 flex items-center justify-center px-6 py-12">
+            <div className="max-w-6xl mx-auto text-center">
+              <AnimatedHeroText
+                staticText="Elevate Your"
+                animatedWords={[
+                  "Infrastructure Excellence",
+                  "DevOps Transformation",
+                  "Cloud Innovation",
+                  "Automation Strategy",
+                  "Team Performance",
+                ]}
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-neon-primary"
+              />
+              <p className="text-lg sm:text-xl md:text-2xl text-neon-secondary mb-8 max-w-3xl mx-auto leading-relaxed">
+                Transform your DevOps journey with expert consulting, cutting-edge automation, and
+                world-class training programs designed for modern infrastructure teams.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#services" className="btn-neon-primary btn-neon-lg">
+                  Explore Services
+                </a>
+                <Link to="/learn" className="btn-neon-outline btn-neon-lg">
+                  Start Learning
+                </Link>
+              </div>
             </div>
-          </div>
+          </main>
         </div>
-      </nav>
-
-      {/* Hero Section with Threads Background */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50">
-        {/* Threads Background */}
-        <div className="absolute inset-0 opacity-30">
-          <Threads
-            color={[0.3, 0.5, 0.9]}
-            amplitude={1.2}
-            distance={0.3}
-            enableMouseInteraction={true}
-          />
-        </div>
-
-        {/* Gradient Overlays */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-blue-400/10 to-cyan-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          <AnimatedHeroText
-            staticText="Elevate Your"
-            animatedWords={[
-              "Infrastructure Excellence",
-              "DevOps Transformation",
-              "Cloud Innovation",
-              "Automation Strategy",
-              "Team Performance",
-            ]}
-            className="text-6xl md:text-7xl font-bold mb-6 leading-tight text-gray-900"
-          />
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Transform your DevOps journey with expert consulting, cutting-edge automation, and
-            world-class training programs designed for modern infrastructure teams.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <GradientButton asChild>
-              <a href="#services">Explore Services</a>
-            </GradientButton>
-            <GradientButton variant="variant" asChild>
-              <Link to="/learn">Start Learning</Link>
-            </GradientButton>
-          </div>
-        </div>
-      </section>
+      </HeroWithBackground>
 
       {/* Services Section */}
-      {/* Expandable Services Section */}
-      <section id="services" className="w-full bg-black">
+      <section id="services" className="w-full bg-neon-darker">
         <div className="text-center py-16 px-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Our{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Services
-            </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-neon-primary mb-6">
+            Our <span className="text-gradient-accent">Services</span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-neon-secondary max-w-3xl mx-auto">
             Comprehensive DevOps solutions tailored to accelerate your digital transformation
           </p>
         </div>
         <ExpandableServices services={expandableServices} />
       </section>
 
-      {/* Traditional Services Grid (Optional - can be removed) */}
-      <section className="py-20 bg-gray-50">
+      {/* Traditional Services Grid */}
+      <section className="py-20 bg-neon-dark">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              What We{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Offer
-              </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-neon-primary mb-6">
+              What We <span className="text-gradient-primary">Offer</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-neon-secondary max-w-3xl mx-auto">
               Detailed breakdown of our comprehensive service offerings
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2"
-              >
+              <div key={index} className="card-neon hover-lift hover:glow-violet">
                 <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{service.description}</p>
+                <h3 className="text-xl font-bold text-neon-primary mb-3">{service.title}</h3>
+                <p className="text-neon-secondary leading-relaxed">{service.description}</p>
               </div>
             ))}
           </div>
@@ -290,16 +276,13 @@ export default function HomePage() {
       </section>
 
       {/* Technology Stack Section */}
-      <section className="py-20 bg-gray-900 text-white">
+      <section className="py-20 bg-neon-darker">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Technology{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                Stack
-              </span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-neon-primary">
+              Technology <span className="text-gradient-secondary">Stack</span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-neon-secondary max-w-3xl mx-auto">
               We work with the latest and most reliable technologies in the DevOps ecosystem
             </p>
           </div>
@@ -309,9 +292,7 @@ export default function HomePage() {
               <button
                 key={category}
                 onClick={() => setActiveFilter(category)}
-                className={`btn-filter ${
-                  activeFilter === category ? "btn-filter-active" : "btn-filter-inactive"
-                }`}
+                className={`tab-neon ${activeFilter === category ? "active" : ""}`}
               >
                 {category}
               </button>
@@ -319,7 +300,7 @@ export default function HomePage() {
           </div>
 
           {/* Logo Loop Container */}
-          <div className="relative h-32 pb-16 bg-gray-800/50 rounded-2xl border border-gray-700">
+          <div className="relative h-32 pb-16 glass-neon rounded-2xl border border-neon-violet/30">
             <div className="h-32 overflow-hidden">
               <LogoLoop
                 logos={technologies[activeFilter as keyof typeof technologies].map((tech) => ({
@@ -334,7 +315,7 @@ export default function HomePage() {
                 hoverSpeed={10}
                 scaleOnHover
                 fadeOut
-                fadeOutColor="#1F2937"
+                fadeOutColor="#0f0f1a"
                 ariaLabel={`${activeFilter} technologies`}
               />
             </div>
@@ -345,7 +326,7 @@ export default function HomePage() {
             {technologies[activeFilter as keyof typeof technologies].map((tech) => (
               <span
                 key={tech}
-                className="px-4 py-2 bg-gray-800 rounded-full text-sm font-medium text-gray-300 border border-gray-700 hover:border-cyan-500 transition-colors"
+                className="px-4 py-2 bg-neon-darker rounded-full text-sm font-medium text-neon-secondary border border-neon-violet/30 hover:border-neon-cyan hover:text-neon-cyan transition-colors"
               >
                 {tech.charAt(0).toUpperCase() + tech.slice(1)}
               </span>
@@ -355,102 +336,78 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
+      <section id="contact" className="py-20 bg-neon-dark">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Get In{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Touch
-              </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-neon-primary mb-6">
+              Get In <span className="text-gradient-primary">Touch</span>
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-neon-secondary">
               Ready to transform your infrastructure? Let's discuss your project.
             </p>
           </div>
 
-          <form onSubmit={handleContactSubmit} className="bg-gray-50 p-8 rounded-2xl">
+          <form onSubmit={handleContactSubmit} className="glass-neon-strong p-8 rounded-2xl">
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                />
+                <label className="block text-sm font-medium text-neon-secondary mb-2">Name</label>
+                <input type="text" name="name" required className="input-neon" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                />
+                <label className="block text-sm font-medium text-neon-secondary mb-2">Email</label>
+                <input type="email" name="email" required className="input-neon" />
               </div>
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
-              <input
-                type="text"
-                name="company"
-                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-              />
+              <label className="block text-sm font-medium text-neon-secondary mb-2">Company</label>
+              <input type="text" name="company" className="input-neon" />
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
-              <textarea
-                name="message"
-                required
-                rows={5}
-                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none"
-              ></textarea>
+              <label className="block text-sm font-medium text-neon-secondary mb-2">Message</label>
+              <textarea name="message" required rows={5} className="textarea-neon"></textarea>
             </div>
-            <GradientButton type="submit" className="w-full">
+            <button type="submit" className="btn-neon-primary w-full">
               Send Message
-            </GradientButton>
+            </button>
           </form>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-neon-darker border-t border-neon-violet/20 py-16">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="text-2xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                  WePrior
-                </span>
-                <span> Solutions</span>
+                <span className="text-gradient-secondary">WePrior</span>
+                <span className="text-neon-primary"> Solutions</span>
               </div>
-              <p className="text-gray-400 mb-4">
+              <p className="text-neon-muted mb-4">
                 Transforming infrastructure through expert DevOps consulting and world-class
                 education.
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Services</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-4 text-neon-primary">Services</h4>
+              <ul className="space-y-2 text-neon-muted">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="link-neon-underline">
                     DevOps Transformation
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="link-neon-underline">
                     Cloud Migration
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="link-neon-underline">
                     Infrastructure as Code
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="link-neon-underline">
                     Security & Compliance
                   </a>
                 </li>
@@ -458,25 +415,25 @@ export default function HomePage() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Education</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-4 text-neon-primary">Education</h4>
+              <ul className="space-y-2 text-neon-muted">
                 <li>
-                  <Link to="/learn" className="hover:text-white transition-colors">
+                  <Link to="/learn" className="link-neon-underline">
                     Infrawarrior Platform
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="link-neon-underline">
                     Kubernetes Mastery
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="link-neon-underline">
                     Cloud Architecture
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="link-neon-underline">
                     DevOps Bootcamp
                   </a>
                 </li>
@@ -484,27 +441,27 @@ export default function HomePage() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-4 text-neon-primary">Contact</h4>
+              <ul className="space-y-2 text-neon-muted">
                 <li>hello@weprior.com</li>
                 <li>+1 (555) 123-4567</li>
                 <li>San Francisco, CA</li>
               </ul>
               <div className="flex space-x-4 mt-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="#" className="link-neon">
                   LinkedIn
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="#" className="link-neon">
                   Twitter
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="#" className="link-neon">
                   GitHub
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+          <div className="border-t border-neon-violet/20 mt-12 pt-8 text-center text-neon-muted">
             <p>&copy; 2024 WePrior Solutions. All rights reserved.</p>
           </div>
         </div>
