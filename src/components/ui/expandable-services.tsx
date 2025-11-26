@@ -32,7 +32,7 @@ export function ExpandableServices({ services }: ExpandableServicesProps) {
           return (
             <div
               key={index}
-              className="relative overflow-hidden cursor-pointer group"
+              className="relative overflow-hidden cursor-pointer group border-spacing-5"
               style={{
                 width,
                 transition: "width 400ms cubic-bezier(0.4, 0, 0.2, 1)",

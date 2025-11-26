@@ -1,7 +1,19 @@
 "use client";
-import { motion } from "framer-motion";
+
+import { motion, type Variants } from "framer-motion";
 import { Circle } from "lucide-react";
+import { type ReactNode } from "react";
+
 import { cn } from "@/lib/utils";
+
+type ElegantShapeProps = {
+  className?: string;
+  delay?: number;
+  width?: number;
+  height?: number;
+  rotate?: number;
+  gradient?: string;
+};
 
 function ElegantShape({
   className,
@@ -10,14 +22,7 @@ function ElegantShape({
   height = 100,
   rotate = 0,
   gradient = "from-white/[0.08]",
-}: {
-  className?: string;
-  delay?: number;
-  width?: number;
-  height?: number;
-  rotate?: number;
-  gradient?: string;
-}) {
+}: ElegantShapeProps) {
   return (
     <motion.div
       initial={{
@@ -69,24 +74,26 @@ function ElegantShape({
   );
 }
 
-function HeroGeometric({
-  badge = "Design Collective",
-  title1 = "Elevate Your Digital Vision",
-  title2 = "Crafting Exceptional Websites",
-  description = "Crafting exceptional digital experiences through innovative design and cutting-edge technology.",
-  children,
-  rightContent,
-  layout = "centered",
-}: {
+type HeroGeometricProps = {
   badge?: string;
   title1?: string;
   title2?: string;
   description?: string;
-  children?: React.ReactNode;
-  rightContent?: React.ReactNode;
-  layout?: "centered" | "two-column";
-}) {
-  const fadeUpVariants = {
+  layout?: "default" | "two-column";
+  rightContent?: ReactNode;
+  children?: ReactNode;
+};
+
+function HeroGeometric({
+  badge = "Design Collective",
+  title1 = "Elevate Your Digital Vision",
+  title2 = "Crafting Exceptional Websites",
+  description,
+  layout = "default",
+  rightContent,
+  children,
+}: HeroGeometricProps) {
+  const fadeUpVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: (i: number) => ({
       opacity: 1,
@@ -99,9 +106,88 @@ function HeroGeometric({
     }),
   };
 
+  const heroDescription =
+    description ??
+    "Crafting exceptional digital experiences through innovative design and cutting-edge technology.";
+
+  const isTwoColumn = layout === "two-column";
+  const shouldUseCustomContent = !isTwoColumn && !!children;
+
+  const badgeBlock = (
+    <motion.div
+      custom={0}
+      variants={fadeUpVariants}
+      initial="hidden"
+      animate="visible"
+      className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
+    >
+      <Circle className="h-2 w-2 fill-rose-500/80" />
+      <span className="text-sm text-white/60 tracking-wide">{badge}</span>
+    </motion.div>
+  );
+
+  const titleBlock = (
+    <motion.div custom={1} variants={fadeUpVariants} initial="hidden" animate="visible">
+      <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-6 md:mb-8 tracking-tight">
+        <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+          {title1}
+        </span>
+        <br />
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+          {title2}
+        </span>
+      </h1>
+    </motion.div>
+  );
+
+  const descriptionBlock = (
+    <motion.div custom={2} variants={fadeUpVariants} initial="hidden" animate="visible">
+      <p
+        className={cn(
+          "text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide",
+          isTwoColumn ? "max-w-2xl" : "max-w-xl mx-auto px-4"
+        )}
+      >
+        {heroDescription}
+      </p>
+    </motion.div>
+  );
+
+  const ctaBlock =
+    isTwoColumn && children ? (
+      <motion.div custom={3} variants={fadeUpVariants} initial="hidden" animate="visible">
+        <div className="flex flex-col sm:flex-row gap-4">{children}</div>
+      </motion.div>
+    ) : null;
+
+  const defaultContent = (
+    <div className={cn("max-w-3xl mx-auto text-center", isTwoColumn && "mx-0 text-left")}>
+      {badgeBlock}
+      {titleBlock}
+      {descriptionBlock}
+      {ctaBlock}
+    </div>
+  );
+
+  const twoColumnContent = (
+    <div className="max-w-6xl mx-auto grid gap-12 lg:grid-cols-2 items-center">
+      {defaultContent}
+      <div className="relative hidden lg:block">
+        {rightContent ?? (
+          <div className="aspect-[4/3] rounded-3xl border border-white/10 bg-white/5 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur flex items-center justify-center text-white/60 text-lg">
+            Add your media here
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  const builtInContent = isTwoColumn ? twoColumnContent : defaultContent;
+
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303]">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+
       <div className="absolute inset-0 overflow-hidden">
         <ElegantShape
           delay={0.3}
@@ -111,6 +197,7 @@ function HeroGeometric({
           gradient="from-indigo-500/[0.15]"
           className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
         />
+
         <ElegantShape
           delay={0.5}
           width={500}
@@ -119,6 +206,7 @@ function HeroGeometric({
           gradient="from-rose-500/[0.15]"
           className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
         />
+
         <ElegantShape
           delay={0.4}
           width={300}
@@ -127,6 +215,7 @@ function HeroGeometric({
           gradient="from-violet-500/[0.15]"
           className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
         />
+
         <ElegantShape
           delay={0.6}
           width={200}
@@ -135,6 +224,7 @@ function HeroGeometric({
           gradient="from-amber-500/[0.15]"
           className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
         />
+
         <ElegantShape
           delay={0.7}
           width={150}
@@ -144,104 +234,15 @@ function HeroGeometric({
           className="left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
         />
       </div>
-      <div className="relative z-10 container mx-auto px-4 md:px-6">
-        {layout === "centered" ? (
-          <div className="max-w-3xl mx-auto text-center">
-            <motion.div
-              custom={0}
-              variants={fadeUpVariants}
-              initial="hidden"
-              animate="visible"
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
-            >
-              <Circle className="h-2 w-2 fill-rose-500/80" />
-              <span className="text-sm text-white/60 tracking-wide">{badge}</span>
-            </motion.div>
-            <motion.div custom={1} variants={fadeUpVariants} initial="hidden" animate="visible">
-              <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-6 md:mb-8 tracking-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
-                  {title1}
-                </span>
-                <br />
-                <span
-                  className={cn(
-                    "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 "
-                  )}
-                >
-                  {title2}
-                </span>
-              </h1>
-            </motion.div>
-            <motion.div custom={2} variants={fadeUpVariants} initial="hidden" animate="visible">
-              <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
-                {description}
-              </p>
-            </motion.div>
-            {children && (
-              <motion.div custom={3} variants={fadeUpVariants} initial="hidden" animate="visible">
-                {children}
-              </motion.div>
-            )}
-          </div>
-        ) : (
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-            {/* Left Column - Text and Buttons */}
-            <div className="text-left">
-              <motion.div
-                custom={0}
-                variants={fadeUpVariants}
-                initial="hidden"
-                animate="visible"
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8"
-              >
-                <Circle className="h-2 w-2 fill-rose-500/80" />
-                <span className="text-sm text-white/60 tracking-wide">{badge}</span>
-              </motion.div>
-              <motion.div custom={1} variants={fadeUpVariants} initial="hidden" animate="visible">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
-                    {title1}
-                  </span>
-                  <br />
-                  <span
-                    className={cn(
-                      "bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300"
-                    )}
-                  >
-                    {title2}
-                  </span>
-                </h1>
-              </motion.div>
-              <motion.div custom={2} variants={fadeUpVariants} initial="hidden" animate="visible">
-                <p className="text-lg md:text-xl text-white/50 mb-8 leading-relaxed font-light">
-                  {description}
-                </p>
-              </motion.div>
-              {children && (
-                <motion.div custom={3} variants={fadeUpVariants} initial="hidden" animate="visible">
-                  {children}
-                </motion.div>
-              )}
-            </div>
 
-            {/* Right Column - Custom Content (Code Terminal) */}
-            {rightContent && (
-              <motion.div
-                custom={4}
-                variants={fadeUpVariants}
-                initial="hidden"
-                animate="visible"
-                className="relative"
-              >
-                {rightContent}
-              </motion.div>
-            )}
-          </div>
-        )}
+      <div className="relative z-10 container mx-auto px-4 md:px-6">
+        {shouldUseCustomContent ? children : builtInContent}
       </div>
+
       <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
     </div>
   );
 }
 
 export { HeroGeometric };
+

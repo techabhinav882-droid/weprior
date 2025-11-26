@@ -5,7 +5,6 @@ import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
 import CodeTerminal from "../components/CodeTerminal";
 import { GradientButton } from "@/components/ui/gradient-button";
-import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 import { GeometricPageWrapper } from "@/components/ui/geometric-page-wrapper";
 import { Timeline } from "@/components/ui/timeline";
 
@@ -280,24 +279,43 @@ export default function LearnPage() {
           </div>
         </nav>
 
-        {/* Hero Section with Geometric Background - Two Column Layout */}
-        <HeroGeometric
-          badge="Infrawarrior Academy"
-          title1="Train Like It's"
-          title2="Production"
-          description="Master DevOps engineering through real production scenarios. Break systems, fix them, and learn from industry veterans who've scaled the world's largest platforms."
-          layout="two-column"
-          rightContent={<CodeTerminal />}
-        >
-          <div className="flex flex-col sm:flex-row gap-4">
-            <GradientButton asChild>
-              <a href="#programs">Explore Programs</a>
-            </GradientButton>
-            <GradientButton variant="variant" asChild>
-              <a href="#mission">Our Mission</a>
-            </GradientButton>
+        {/* Hero Section - Two Column Layout */}
+        <section className="relative min-h-screen w-full flex items-center justify-center py-20">
+          <div className="relative z-10 container mx-auto px-4 md:px-6">
+            <div className="max-w-6xl mx-auto grid gap-12 lg:grid-cols-2 items-center">
+              {/* Left Column */}
+              <div className="text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12">
+                  <span className="text-sm text-white/60 tracking-wide">Infrawarrior Academy</span>
+                </div>
+                <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 md:mb-8 tracking-tight">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+                    Train Like It's
+                  </span>
+                  <br />
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+                    Production
+                  </span>
+                </h1>
+                <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-2xl">
+                  Master DevOps engineering through real production scenarios. Break systems, fix them, and learn from industry veterans who've scaled the world's largest platforms.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <GradientButton asChild>
+                    <a href="#programs">Explore Programs</a>
+                  </GradientButton>
+                  <GradientButton variant="variant" asChild>
+                    <a href="#mission">Our Mission</a>
+                  </GradientButton>
+                </div>
+              </div>
+              {/* Right Column */}
+              <div className="relative hidden lg:block">
+                <CodeTerminal />
+              </div>
+            </div>
           </div>
-        </HeroGeometric>
+        </section>
 
         {/* Mission Section with Timeline */}
         <section id="mission" className="py-20 bg-gray-900/30 backdrop-blur-sm">
