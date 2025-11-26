@@ -1088,11 +1088,11 @@ export default function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=1080&fit=crop"
+            src="/bg.jpg"
             alt="Contact background"
-            className="w-full h-full object-cover opacity-30 dark:opacity-20"
+            className="w-full h-full object-cover opacity-60 dark:opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-white/60 to-white/70 dark:from-black/50 dark:via-black/60 dark:to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/40 to-white/50 dark:from-black/30 dark:via-black/40 dark:to-black/50" />
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto px-6">
