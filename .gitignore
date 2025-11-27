@@ -29,3 +29,4 @@ GRADIENT_BUTTON_INTEGRATION.md
 
 # Ignored for the template, you probably want to remove it:
 package-lock.json
+.env
