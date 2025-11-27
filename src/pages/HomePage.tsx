@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { Clock, ArrowRight, ChevronDown } from "lucide-react";
+import Spline from '@splinetool/react-spline';
 
 import { MorphingText } from "@/components/ui/morphing-text";
 import { ExpandableServices } from "@/components/ui/expandable-services";
@@ -16,6 +17,7 @@ import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import SyntheticHero from "@/components/ui/synthetic-hero";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { blogPosts } from "@/data/blogPosts";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,6 +26,7 @@ export default function HomePage() {
   const [showIndustriesDropdown, setShowIndustriesDropdown] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const submitContact = useMutation(api.contacts.submitContact);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -113,6 +116,12 @@ export default function HomePage() {
       title: "AWS Powered Solutions",
       description: "Maximize AWS capabilities with serverless architectures, managed services, cost optimization, and enterprise-grade cloud solutions.",
       slug: "aws-powered-solutions"
+    },
+    {
+      icon: "💻",
+      title: "Software Development",
+      description: "Custom software solutions tailored to your business needs with modern frameworks, scalable architectures, and best development practices.",
+      slug: "software-development"
     },
   ];
 
@@ -259,18 +268,18 @@ export default function HomePage() {
   };
 
   const techLogos = {
-    kubernetes: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=100&h=100&fit=crop",
-    docker: "https://images.unsplash.com/photo-1605745341112-85968b19335b?w=100&h=100&fit=crop",
-    terraform: "https://images.unsplash.com/photo-1667372335962-5fd503a8ae5b?w=100&h=100&fit=crop",
-    aws: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=100&h=100&fit=crop",
-    azure: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=100&h=100&fit=crop",
-    gcp: "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=100&h=100&fit=crop",
-    jenkins: "https://images.unsplash.com/photo-1618477247222-acbdb0e159b3?w=100&h=100&fit=crop",
-    gitlab: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=100&h=100&fit=crop",
-    prometheus: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=100&h=100&fit=crop",
-    grafana: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop",
-    ansible: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=100&h=100&fit=crop",
-    helm: "https://images.unsplash.com/photo-1667372393086-9d4001d51cf1?w=100&h=100&fit=crop",
+    kubernetes: "/Containerization_Solutioning_Kubernetes_a8230a47af.png",
+    docker: "/pngegg_d48185c769.webp",
+    terraform: "/Cloud_Terraform_f2ef52945e.png",
+    aws: "/aws_partnership_l_05dd038db5.png",
+    azure: "/azure_partnership_l_efe2d71e25.png",
+    gcp: "/Containerization_Solutioning_GKE_b1ceae1dc1.webp",
+    jenkins: "/Cicd_Jenkins_66542d8784.png",
+    gitlab: "/gitlab_gnw_logo_8a1dafc989.webp",
+    prometheus: "/logo_on_white_558ec2649e.png",
+    grafana: "/311_3115823_grafana_logo_grafana_logo_png_clipart_47422aee25.jpg",
+    ansible: "/Ansible_commands_9d30fb0a87.webp",
+    helm: "/Containerization_Solutioning_Helm_4d519773b8.webp",
   };
 
   const testimonials = [
@@ -460,68 +469,81 @@ export default function HomePage() {
       </nav>
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated shader background */}
+        {/* Background - Spline in light mode, SyntheticHero in dark mode */}
         <div className="absolute inset-0 z-0">
-          <SyntheticHero
-            title=""
-            description=""
-            badgeText=""
-            badgeLabel=""
-            ctaButtons={[]}
-            microDetails={[]}
-          />
+          {theme === 'light' ? (
+            <Spline scene="https://prod.spline.design/YPrQxlhpDCDyVeua/scene.splinecode" />
+          ) : (
+            <SyntheticHero
+              title="Designing Infrastructure as Unique as Your Business"
+              description="Transform your DevOps journey with enterprise-grade solutions tailored to your needs. We deliver scalable, secure infrastructure that drives innovation."
+              badgeText="DevOps Excellence"
+              badgeLabel="Trusted Partner"
+              ctaButtons={[
+                { text: "Our Services", href: "#services", primary: true },
+                { text: "Get in Touch", href: "#contact" }
+              ]}
+              microDetails={[
+                "Enterprise-grade security",
+                "99.9% uptime guarantee",
+                "24/7 expert support",
+              ]}
+            />
+          )}
         </div>
 
-        {/* Hero content with morphing text */}
-        <div className="relative z-20 flex flex-col w-full pt-20">
-          <div className="flex-1 flex items-center justify-center px-4 sm:px-6">
-            <div className="text-center space-y-8">
-              <h2 className="text-3xl font-semibold uppercase tracking-[1rem] text-black/60 dark:text-white/60">
-                Elevate Your
-              </h2>
-              <br />
-              <MorphingText
-                texts={heroTexts}
-                className="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] ml-auto mr-auto"
-              />
-              <br />
-              <br />
-              <p className="text-lg sm:text-xl md:text-2xl text-black/70 dark:text-white/70 max-w-3xl mx-auto leading-relaxed">
-                "DESIGNING INFRASTRUCTURE AS
-                <span> </span>
-                <span className="bg-gradient-to-r from-indigo-400 via-rose-300 to-amber-300 bg-clip-text text-transparent">
-                  UNIQUE
-                </span>
-                <span> </span>
-                AS YOUR BUSINESS"
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <GradientButton asChild>
-                  <a href="#services">Our Services</a>
-                </GradientButton>
-                <GradientButton variant="variant" asChild>
-                  <a href="#contact">Get in touch</a>
-                </GradientButton>
+        {/* Hero content - only show in light mode */}
+        {theme === 'light' && (
+          <div className="relative z-20 flex flex-col w-full pt-20">
+            <div className="flex-1 flex items-center justify-center px-4 sm:px-6">
+              <div className="text-center space-y-8">
+                <h2 className="text-3xl font-semibold uppercase tracking-[1rem] text-black/60 dark:text-white/60">
+                  Elevate Your
+                </h2>
+                <br />
+                <MorphingText
+                  texts={heroTexts}
+                  className="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] ml-auto mr-auto"
+                />
+                <br />
+                <br />
+                <p className="text-lg sm:text-xl md:text-2xl text-black/70 dark:text-white/70 max-w-3xl mx-auto leading-relaxed">
+                  "DESIGNING INFRASTRUCTURE AS
+                  <span> </span>
+                  <span className="bg-gradient-to-r from-indigo-400 via-rose-300 to-amber-300 bg-clip-text text-transparent">
+                    UNIQUE
+                  </span>
+                  <span> </span>
+                  AS YOUR BUSINESS"
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <GradientButton asChild>
+                    <a href="#services">Our Services</a>
+                  </GradientButton>
+                  <GradientButton variant="variant" asChild>
+                    <a href="#contact">Get in touch</a>
+                  </GradientButton>
+                </div>
+                
+                {/* Micro details */}
+                <ul className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-light tracking-tight text-black/70 dark:text-[#E7D4F8]/70">
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 dark:bg-[#C036A5]/60" />
+                    ENTERPRISE-GRADE SECURITY
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 dark:bg-[#C036A5]/60" />
+                    99.9% UPTIME GUARANTEE
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 dark:bg-[#C036A5]/60" />
+                    24/7 EXPERT SUPPORT
+                  </li>
+                </ul>
               </div>
-              
-              {/* Micro details */}
-              <ul className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-light tracking-tight text-black/70 dark:text-[#E7D4F8]/70">
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 dark:bg-[#C036A5]/60" />
-                  ENTERPRISE-GRADE SECURITY
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 dark:bg-[#C036A5]/60" />
-                  99.9% UPTIME GUARANTEE
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 dark:bg-[#C036A5]/60" />
-                  24/7 EXPERT SUPPORT
-                </li>
-              </ul>
             </div>
           </div>
-        </div>
+        )}
       </section>
 
       {/* <section id="services" className="w-full bg-[#040404]">
@@ -571,7 +593,7 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Our{" "}
-              <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-rose-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
                 Services
               </span>
             </h2>
@@ -600,7 +622,7 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Why Choose{" "}
-              <span className="bg-gradient-to-r from-[#C036A5] via-[#8B2F8E] to-[#E04C7D] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
                 WePrior
               </span>
             </h2>
@@ -735,7 +757,7 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Industries We{" "}
-              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
                 Serve
               </span>
             </h2>
@@ -764,7 +786,7 @@ export default function HomePage() {
           <div className="text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Technology{" "}
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-rose-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
                 Stack
               </span>
             </h2>
@@ -822,11 +844,11 @@ export default function HomePage() {
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#C036A5] via-[#8B2F8E] to-[#E04C7D] opacity-100 transition-all duration-300 shadow-[0_0_15px_rgba(192,54,165,0.4),0_0_30px_rgba(139,47,142,0.3),0_4px_20px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_30px_rgba(192,54,165,0.8),0_0_60px_rgba(139,47,142,0.6),0_0_90px_rgba(224,76,125,0.4),0_8px_40px_rgba(0,0,0,0.8)]" />
                 
                 {/* Card content - image covers whole card with border visible */}
-                <div className="absolute inset-[3px] rounded-2xl overflow-hidden transition-all duration-500 group-hover:scale-105">
+                <div className="absolute inset-[3px] rounded-2xl overflow-hidden bg-white transition-all duration-500 group-hover:scale-105">
                   <img
                     src={techLogos[tech as keyof typeof techLogos]}
                     alt={tech}
-                    className="w-full h-full object-cover transition-transform duration-500"
+                    className="w-full h-full object-contain p-8 transition-transform duration-500"
                   />
                 </div>
               </div>
@@ -842,11 +864,11 @@ export default function HomePage() {
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#C036A5] via-[#8B2F8E] to-[#E04C7D] opacity-100 transition-all duration-300 shadow-[0_0_15px_rgba(192,54,165,0.4),0_0_30px_rgba(139,47,142,0.3),0_4px_20px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_30px_rgba(192,54,165,0.8),0_0_60px_rgba(139,47,142,0.6),0_0_90px_rgba(224,76,125,0.4),0_8px_40px_rgba(0,0,0,0.8)]" />
                 
                 {/* Card content - image covers whole card with border visible */}
-                <div className="absolute inset-[3px] rounded-2xl overflow-hidden transition-all duration-500 group-hover:scale-105">
+                <div className="absolute inset-[3px] rounded-2xl overflow-hidden bg-white transition-all duration-500 group-hover:scale-105">
                   <img
                     src={techLogos[tech as keyof typeof techLogos]}
                     alt={tech}
-                    className="w-full h-full object-cover transition-transform duration-500"
+                    className="w-full h-full object-contain p-8 transition-transform duration-500"
                   />
                 </div>
               </div>
@@ -1167,7 +1189,7 @@ export default function HomePage() {
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-6">
                 <div className="text-3xl font-bold">
-                  <span className="bg-gradient-to-r from-[#C036A5] via-[#8B2F8E] to-[#E04C7D] bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
                     WePrior
                   </span>
                 </div>

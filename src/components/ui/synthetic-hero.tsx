@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { Button } from "@/components/ui/button";
+import { GradientButton } from "@/components/ui/gradient-button";
 import { Badge } from "@/components/ui/badge";
 
 gsap.registerPlugin(SplitText, useGSAP);
@@ -102,14 +102,14 @@ const fragmentShader = `
 
       c /= 8.0;
 
-      // Purple/Magenta color scheme (#C036A5, #8B2F8E, #E04C7D)
-      vec3 baseColor = vec3(0.75, 0.21, 0.65);  // Magenta base
-      vec3 accentColor = vec3(0.55, 0.18, 0.56); // Violet accent
-      vec3 highlightColor = vec3(0.88, 0.30, 0.49); // Pink highlight
+      // Subtle purple/gray color scheme - less neon
+      vec3 baseColor = vec3(0.35, 0.30, 0.45);  // Muted purple-gray
+      vec3 accentColor = vec3(0.25, 0.22, 0.35); // Dark violet-gray
+      vec3 highlightColor = vec3(0.45, 0.35, 0.50); // Subtle purple
       
       vec3 mixedColor = mix(baseColor, accentColor, sin(u_time * 0.3) * 0.5 + 0.5);
-      vec3 finalColor = mix(mixedColor, highlightColor, c * 0.3);
-      finalColor *= smoothstep(0.0, 1.0, c * 0.6);
+      vec3 finalColor = mix(mixedColor, highlightColor, c * 0.2);
+      finalColor *= smoothstep(0.0, 1.0, c * 0.4);
 
       fragColor = vec4(finalColor, 1.0);
   }
@@ -263,12 +263,12 @@ const SyntheticHero = ({
 
 			<div className="relative z-10 flex flex-col items-center text-center px-6">
 				<div ref={badgeWrapperRef}>
-					<Badge className="mb-6 bg-white/10 hover:bg-white/15 text-[#E7D4F8] backdrop-blur-md border border-[#C036A5]/30 uppercase tracking-wider font-medium flex items-center gap-2 px-4 py-1.5">
-						<span className="text-[10px] font-light tracking-[0.18em] text-[#F3EAFD]/80">
+					<Badge className="mb-6 bg-white/5 hover:bg-white/10 text-white/90 backdrop-blur-md border border-white/20 uppercase tracking-wider font-medium flex items-center gap-2 px-4 py-1.5">
+						<span className="text-[10px] font-light tracking-[0.18em] text-white/70">
 							{badgeLabel}
 						</span>
-						<span className="h-1 w-1 rounded-full bg-[#C036A5]/60" />
-						<span className="text-xs font-light tracking-tight text-[#F3EAFD]">
+						<span className="h-1 w-1 rounded-full bg-white/40" />
+						<span className="text-xs font-light tracking-tight text-white/90">
 							{badgeText}
 						</span>
 					</Badge>
@@ -283,7 +283,7 @@ const SyntheticHero = ({
 
 				<p
 					ref={paragraphRef}
-					className="text-[#E7D4F8]/80 text-lg max-w-2xl mx-auto mb-10 font-light"
+					className="text-white/70 text-lg max-w-2xl mx-auto mb-10 font-light"
 				>
 					{description}
 				</p>
@@ -294,31 +294,26 @@ const SyntheticHero = ({
 				>
 					{ctaButtons.map((button, index) => {
 						const isPrimary = button.primary ?? index === 0;
-						const classes = isPrimary
-							? "px-8 py-3 rounded-xl text-base font-medium backdrop-blur-lg bg-gradient-to-r from-[#C036A5] to-[#8B2F8E] hover:from-[#E04C7D] hover:to-[#C036A5] shadow-lg transition-all cursor-pointer text-white"
-							: "px-8 py-3 rounded-xl text-base font-medium border-[#C036A5]/30 text-[#F3EAFD] hover:bg-[#C036A5]/10 backdrop-blur-lg transition-all cursor-pointer";
 
 						if (button.href) {
 							return (
-								<Button
+								<GradientButton
 									key={index}
-									variant={isPrimary ? undefined : "outline"}
-									className={classes}
+									variant={isPrimary ? undefined : "variant"}
 									asChild
 								>
 									<a href={button.href}>{button.text}</a>
-								</Button>
+								</GradientButton>
 							);
 						}
 
 						return (
-							<Button
+							<GradientButton
 								key={index}
-								variant={isPrimary ? undefined : "outline"}
-								className={classes}
+								variant={isPrimary ? undefined : "variant"}
 							>
 								{button.text}
-							</Button>
+							</GradientButton>
 						);
 					})}
 				</div>
@@ -326,11 +321,11 @@ const SyntheticHero = ({
 				{microDetails.length > 0 && (
 					<ul
 						ref={microRef}
-						className="mt-8 flex flex-wrap justify-center gap-6 text-xs font-light tracking-tight text-[#E7D4F8]/70"
+						className="mt-8 flex flex-wrap justify-center gap-6 text-xs font-light tracking-tight text-white/60"
 					>
 						{microDetails.map((detail, index) => (
 							<li key={index} className="flex items-center gap-2">
-								<span className="h-1 w-1 rounded-full bg-[#C036A5]/60" />
+								<span className="h-1 w-1 rounded-full bg-white/40" />
 								{detail}
 							</li>
 						))}
